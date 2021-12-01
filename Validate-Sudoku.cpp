@@ -39,27 +39,29 @@ std::string check(std::vector<int> &arr)
     std::vector<int> appeared = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     bool happened = false;
     bool outOfRange = false;
-    int x;
     if (arr.size() != 9)
-        err += "The length of the row is not 9\n";
-
-    for (int i = 0; i < arr.size(); i++)
     {
-        x = arr[i];
-        if ((x < 1 || x > 9) && !outOfRange)
+        err += "The length of the row is not 9\n";
+    }
+
+    for (const int &arrElement : arr)
+    {
+        if ((arrElement < 1 || arrElement > 9) && !outOfRange)
         {
             err += "There is a number that is out of range from 1 to 9\n";
             outOfRange = true;
         }
-        else if (x > 0 && x < 9)
+        else if (arrElement > 0 && arrElement < 9)
         {
-            if (appeared[x - 1] == x && !happened)
+            if (appeared[arrElement - 1] == arrElement && !happened)
             {
                 err += "There is a number in range that is repeated\n";
                 happened = true;
             }
             else
-                appeared[x - 1] = x;
+            {
+                appeared[arrElement - 1] = arrElement;
+            }
         }
     }
 
