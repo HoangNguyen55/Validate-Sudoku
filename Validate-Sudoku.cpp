@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-std::string check(std::vector<int>&);
+std::string validateRowsCols(std::vector<int>&);
 
 int main()
 {
@@ -29,44 +29,50 @@ int main()
             out += " " + std::to_string(val) + ",";
         out.pop_back();
         std::cout << out << " ]\n";
-        std::cout << check(row) << std::endl;
+        std::cout << validateRowsCols(row) << std::endl;
     }
 }
 
-std::string check(std::vector<int> &arr)
+std::string validateRowsCols(std::vector<int>& arr)
 {
-    std::string err = "";
+    std::string err[2] = { "", "" };
     std::vector<int> appeared = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    bool happened = false;
-    bool outOfRange = false;
-    if (arr.size() != 9)
-    {
-        err += "The length of the row is not 9\n";
-    }
 
-    for (const int &arrElement : arr)
+    for (const int& arrVal : arr)
     {
-        if ((arrElement < 1 || arrElement > 9) && !outOfRange)
+        if ((arrVal < 1 || arrVal > 9) )
         {
-            err += "There is a number that is out of range from 1 to 9\n";
-            outOfRange = true;
+            err[0] += " " + std::to_string(arrVal) + ",";
         }
-        else if (arrElement > 0 && arrElement < 9)
+        else
         {
-            if (appeared[arrElement - 1] == arrElement && !happened)
+            // check if repeated value is already in the string
+            if (appeared[arrVal - 1] == arrVal)
             {
-                err += "There is a number in range that is repeated\n";
-                happened = true;
+                err[1] += " " + std::to_string(arrVal) + ",";
             }
             else
             {
-                appeared[arrElement - 1] = arrElement;
+                appeared[arrVal - 1] = arrVal;
             }
         }
     }
 
-    if (!err.length())
-        err = "The row is valid";
 
-    return err;
+    if (err[0].length())
+    {
+        err[0].pop_back();
+        err[0] += " is out of range from 1 to 9.\n";
+    } 
+    if (err[1].length())
+    {
+        err[1].pop_back();
+        err[1] += " is repeated.\n";
+    }
+    else if (!err[0].length())
+    {
+        err[0] += "Is valid\n";
+    }
+
+    return err[0] + err[1];
 }
