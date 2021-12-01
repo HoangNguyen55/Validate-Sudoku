@@ -46,8 +46,7 @@ std::string validateRowsCols(std::vector<int>& arr)
         }
         else
         {
-            // check if repeated value is already in the string
-            if (appeared[arrVal - 1] == arrVal)
+            if (appeared[arrVal - 1] == arrVal && err[1].find(std::to_string(arrVal)) == std::string::npos)
             {
                 err[1] += " " + std::to_string(arrVal) + ",";
             }
