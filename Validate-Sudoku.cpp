@@ -9,33 +9,73 @@
 #include <exception>
 
 std::string validateRowsCols(std::vector<int>&);
-void get_from_file(int(&sudoku)[9][9]);
+void get_from_file(std::vector<std::vector<int>>&);
+void get_sectors(std::vector<std::vector<int>>&, std::vector<std::vector<int>>&);
 
 int main()
 {
-    int sudoku[9][9];
+    //int sudoku[9][9];
+    std::vector<std::vector<int>> sudoku;
+    std::vector<std::vector<int>> sectors_vec;
     get_from_file(sudoku);
-
+    for (int col = 0; col < 9; col++)
+    {
+        printf("[ ");
+        for (int row = 0; row < 9; row++)
+        {
+            printf(" %d, ", sudoku[col][row]);
+        }
+        printf(" ]\n");
+    }
+    get_sectors(sudoku, sectors_vec);
     
 
+    printf("----------------------------------------\n");
 
+    for (int col = 0; col < 9; col++)
+    {
+        printf("[ ");
+        for (int row = 0; row < 9; row++)
+        {
+            printf(" %d, ", sectors_vec[col][row]);
+        }
+        printf(" ]\n");
+    }
 }
 
-void get_from_file(int (&sudoku)[9][9])
+void get_from_file(std::vector<std::vector<int>>& sudoku)
 {
     std::string c;
     std::ifstream sudoku_file("sudoku.txt");
-    for (int j = 0; j < 9; j++)
+    for (int col = 0; col < 9; col++)
     {
-        for (int i = 0; i < 9;)
+        sudoku.push_back(std::vector<int>());
+        for (int row = 0; row < 9; row++)
         {
             sudoku_file >> c;
-            sudoku[j][i] = std::stoi(c);
-            i++;
-
+            sudoku[col].push_back(std::stoi(c));
         }
     }
     sudoku_file.close();
+}
+
+// TODO: FIX LOGIC ERROR
+void get_sectors(std::vector<std::vector<int>>& vec_to_get_sector, std::vector<std::vector<int>>& out)
+{
+    for (int sec_col = 1; sec_col <= 7; sec_col += 3)
+    {
+        for (int sec_row = 1; sec_row <= 7; sec_row += 3)
+        {
+            out.push_back(std::vector<int>());
+            for (int col = sec_row - 1; col <= sec_row + 1; col++)
+            {
+                for (int row = sec_row - 1; row <= sec_row + 1; row++)
+                {
+                    out.back().push_back(vec_to_get_sector[col][row]);
+                }
+            }
+        }
+    }
 }
 
 std::string validateRowsCols(std::vector<int>& arr)
