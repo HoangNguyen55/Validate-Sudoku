@@ -3,34 +3,39 @@
 // check if sudoku puzzle is valid
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
+#include <exception>
 
 std::string validateRowsCols(std::vector<int>&);
+void get_from_file(int(&sudoku)[9][9]);
 
 int main()
 {
-    std::string out;
-    std::vector<int> rowsToTest[] = {
-      {2, 2, 2, 5, 47, 7, 8, 9, 10},
-      {0, 0, 0, 0},
-      {1, 5, 6, 7, 8, 4, 2, 3, 9},
-      {1, 1, 2, 4, 7, 2},
-      {9, 6, 5, 4, 7, 2, 3, 4, 4, 18},
-      {100, 2636, 24, 288, 3, 9, 7, 89},
-      {98, 1, 3, 0, 7, 5, 9, 7, 2, 3},
-      {1, 5, 6, 7, 8, 69, 73, 3, 69},
-    };
+    int sudoku[9][9];
+    get_from_file(sudoku);
 
-    for (std::vector<int> row : rowsToTest)
+    
+
+
+}
+
+void get_from_file(int (&sudoku)[9][9])
+{
+    std::string c;
+    std::ifstream sudoku_file("sudoku.txt");
+    for (int j = 0; j < 9; j++)
     {
-        out = "\nCurrent testing row: [";
-        for (int val : row)
-            out += " " + std::to_string(val) + ",";
-        out.pop_back();
-        std::cout << out << " ]\n";
-        std::cout << validateRowsCols(row) << std::endl;
+        for (int i = 0; i < 9;)
+        {
+            sudoku_file >> c;
+            sudoku[j][i] = std::stoi(c);
+            i++;
+
+        }
     }
+    sudoku_file.close();
 }
 
 std::string validateRowsCols(std::vector<int>& arr)
